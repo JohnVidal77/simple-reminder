@@ -1,3 +1,5 @@
+import { HomePage } from './pages/HomePage';
+
 export function App() {
-  return <h1>Hello World, Redux!</h1>;
+  return <HomePage />;
 }
