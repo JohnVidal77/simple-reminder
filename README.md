@@ -27,7 +27,10 @@ To ensure a good code formating and best pratices was used Eslint, Editorconfig 
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Dashboard](https://gitlab.com/codelittinc/react-interview-project-john-vidal/-/raw/develop/screenshots/app1.jpeg)
+![Creating reminder](https://gitlab.com/codelittinc/react-interview-project-john-vidal/-/raw/develop/screenshots/app2.jpeg)
+![Year selector](https://gitlab.com/codelittinc/react-interview-project-john-vidal/-/raw/develop/screenshots/app3.jpeg)
+![Month selector](https://gitlab.com/codelittinc/react-interview-project-john-vidal/-/raw/develop/screenshots/app4.jpeg)
 
 ## Getting Started
 To run this project locally is simple:
