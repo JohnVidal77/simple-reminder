@@ -13,6 +13,7 @@ import {
   prevMonth,
   nextMonth,
 } from '../../features/calendarSlice';
+import { selectReminder } from '../../features/remiderSlice';
 
 const WEEKDAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_LIST = [
@@ -37,6 +38,11 @@ enum CalendarViews {
   YEARS,
 }
 
+interface IDay {
+  day: number | null;
+  hasReminder: boolean;
+}
+
 function calendarCellStyle(selectedDate: number, date: number | null) {
   if (date === null) return 'bg-slate-200';
 
@@ -50,6 +56,7 @@ function calendarCellStyle(selectedDate: number, date: number | null) {
 export function Calendar(): JSX.Element {
   const { selectedDate, selectedMonth, selectedYear } =
     useAppSelector(selectCalendar);
+  const { reminders } = useAppSelector(selectReminder);
   const dispatch = useAppDispatch();
 
   const [view, setView] = useState<CalendarViews>(CalendarViews.WEEKS);
@@ -57,18 +64,35 @@ export function Calendar(): JSX.Element {
   const calendarBase = dayjs()
     .set('month', selectedMonth)
     .set('year', selectedYear);
-
   const firstDayOfMonth = calendarBase.startOf('month').format('ddd');
-  const calendarDates = [];
+  const calendarDates: Array<IDay> = [];
 
+  // * Fill calendar with dates
   for (let i = 0; i < WEEKDAYS_SHORT.indexOf(firstDayOfMonth); i++) {
-    calendarDates.push(null);
+    calendarDates.push({ day: null, hasReminder: false });
   }
 
   for (let i = 1; i <= calendarBase.daysInMonth(); i++) {
-    calendarDates.push(i);
+    calendarDates.push({ day: i, hasReminder: false });
   }
 
+  // * Check if there are reminders for the current month
+  reminders.forEach(reminder => {
+    const reminderDate = dayjs(reminder.date);
+
+    if (
+      reminderDate.month() === selectedMonth &&
+      reminderDate.year() === selectedYear
+    ) {
+      const index = calendarDates.findIndex(
+        date => date.day === reminderDate.date(),
+      );
+
+      calendarDates[index].hasReminder = true;
+    }
+  });
+
+  // * Create calendar rows
   const calendarRows = [];
   let row = [];
 
@@ -86,6 +110,7 @@ export function Calendar(): JSX.Element {
     }
   }
 
+  // * Create years list
   const YEARS_ARRAY = [];
 
   const max = selectedYear + 6;
@@ -197,25 +222,30 @@ export function Calendar(): JSX.Element {
           </tr>
           {calendarRows.map(currentRow => (
             <tr className="flex items-stretch w-full">
-              {currentRow.map(day => (
-                <td className="calendar-cel p-1 md:px-2 md:py-1">
+              {currentRow.map(date => (
+                <td className="p-1 calendar-cel md:px-2 md:py-1">
                   <button
                     type="button"
-                    className={`h-16 duration-200 hover:brightness-90 w-full flex rounded-md border border-slate-200 text-left p-2 disabled:brightness-90 ${calendarCellStyle(
+                    className={`h-16 duration-200 hover:brightness-90 w-full flex flex-col justify-between rounded-md border border-slate-200 text-left p-2 disabled:brightness-90 ${calendarCellStyle(
                       selectedDate,
-                      day,
+                      date.day,
                     )}`}
                     onClick={() => {
-                      if (day) dispatch(selectDate(day));
+                      if (date.day) dispatch(selectDate(date.day));
                     }}
                     disabled={
-                      !day ||
+                      !date.day ||
                       dayjs(
-                        `${selectedYear}-${selectedMonth + 1}-${day}`,
+                        `${selectedYear}-${selectedMonth + 1}-${date.day}`,
                       ).isBefore(dayjs(), 'day')
                     }
                   >
-                    {day}
+                    <span>{date.day}</span>
+                    {date.hasReminder && (
+                      <div className="flex justify-end w-full">
+                        <div className="w-3 h-3 bg-yellow-500 rounded-full" />
+                      </div>
+                    )}
                   </button>
                 </td>
               ))}
