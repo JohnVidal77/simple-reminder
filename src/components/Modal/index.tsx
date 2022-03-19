@@ -24,14 +24,14 @@ export const Modal = forwardRef<IModalRef, IProps>(
     }));
 
     return isActive ? (
-      <div className="fixed top-0 left-0 right-0 w-screen h-screen z-10 backdrop-blur-sm flex justify-center items-center">
+      <div className="fixed top-0 left-0 right-0 w-screen h-full z-10 backdrop-blur-sm flex justify-center items-center">
         <button
           onClick={() => setIsActive(false)}
           type="button"
           aria-label="Close modal"
           className="fixed top-0 left-0 right-0 w-screen h-screen bg-black opacity-50"
         />
-        <div className="relative p-4 w-screen h-screen md:w-2/4 md:h-2/3 bg-white rounded-md z-20">
+        <div className="relative p-4 w-screen h-screen md:w-3/4 md:h-2/3 bg-white rounded-md z-20">
           <header className="flex justify-between text-slate-800 mb-6">
             <h1 className="text-xl font-medium">{title}</h1>
             <IconButton
