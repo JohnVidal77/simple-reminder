@@ -12,7 +12,7 @@ import {
   selectYear,
   prevMonth,
   nextMonth,
-} from './calendarSlice';
+} from '../../features/calendarSlice';
 
 const WEEKDAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_LIST = [
