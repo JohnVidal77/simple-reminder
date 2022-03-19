@@ -18,6 +18,7 @@ import { selectReminder } from '../../features/remiderSlice';
 import { IDay } from '../../types/Day';
 import { CalendarCell } from './CalendarCell';
 import { MonthAndYearButton } from './MonthAndYearButton';
+import { Button } from '../Button';
 
 const WEEKDAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_LIST = [
@@ -94,6 +95,15 @@ export function Calendar(): JSX.Element {
     <div className="px-3">
       {view === CalendarViews.YEARS && (
         <div>
+          <div>
+            <Button
+              typeStyle="basic"
+              type="button"
+              onClick={() => setView(CalendarViews.WEEKS)}
+            >
+              Back to calendar view
+            </Button>
+          </div>
           <ul className="flex flex-wrap">
             {YEARS_ARRAY.map(year => (
               <MonthAndYearButton
@@ -113,6 +123,15 @@ export function Calendar(): JSX.Element {
 
       {view === CalendarViews.MONTHS && (
         <div>
+          <div>
+            <Button
+              typeStyle="basic"
+              type="button"
+              onClick={() => setView(CalendarViews.WEEKS)}
+            >
+              Back to calendar view
+            </Button>
+          </div>
           <ul className="flex flex-wrap">
             {MONTH_LIST.map((month, index) => (
               <MonthAndYearButton
