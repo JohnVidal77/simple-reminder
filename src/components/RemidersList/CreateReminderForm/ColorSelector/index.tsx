@@ -28,7 +28,7 @@ export const ColorSelector = ({ selectedColor, setSelectedColor }: IProps) => {
         {COLORS.map(color => (
           <label
             key={color}
-            className={`flex justify-center items-center cursor-pointer hover:brightness-90 duration-200 w-6 h-6 rounded-md ${color}`}
+            className={`flex justify-center items-center cursor-pointer hover:brightness-90 duration-200 w-8 h-8 rounded-md ${color}`}
             htmlFor={color}
           >
             {selectedColor === color && (

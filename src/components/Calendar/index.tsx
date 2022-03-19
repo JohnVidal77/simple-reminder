@@ -2,6 +2,7 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { IconButton } from '../IconButton';
@@ -14,6 +15,9 @@ import {
   nextMonth,
 } from '../../features/calendarSlice';
 import { selectReminder } from '../../features/remiderSlice';
+import { IDay } from '../../types/Day';
+import { CalendarCell } from './CalendarCell';
+import { MonthAndYearButton } from './MonthAndYearButton';
 
 const WEEKDAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_LIST = [
@@ -38,24 +42,8 @@ enum CalendarViews {
   YEARS,
 }
 
-interface IDay {
-  day: number | null;
-  hasReminder: boolean;
-}
-
-function calendarCellStyle(selectedDate: number, date: number | null) {
-  if (date === null) return 'bg-slate-200';
-
-  if (selectedDate === date) {
-    return 'bg-pink-600 text-white';
-  }
-
-  return 'bg-white text-slate-600';
-}
-
 export function Calendar(): JSX.Element {
-  const { selectedDate, selectedMonth, selectedYear } =
-    useAppSelector(selectCalendar);
+  const { selectedMonth, selectedYear } = useAppSelector(selectCalendar);
   const { reminders } = useAppSelector(selectReminder);
   const dispatch = useAppDispatch();
 
@@ -69,11 +57,11 @@ export function Calendar(): JSX.Element {
 
   // * Fill calendar with dates
   for (let i = 0; i < WEEKDAYS_SHORT.indexOf(firstDayOfMonth); i++) {
-    calendarDates.push({ day: null, hasReminder: false });
+    calendarDates.push({ day: null, hasReminder: false, id: uuidv4() });
   }
 
   for (let i = 1; i <= calendarBase.daysInMonth(); i++) {
-    calendarDates.push({ day: i, hasReminder: false });
+    calendarDates.push({ day: i, hasReminder: false, id: uuidv4() });
   }
 
   // * Check if there are reminders for the current month
@@ -92,24 +80,6 @@ export function Calendar(): JSX.Element {
     }
   });
 
-  // * Create calendar rows
-  const calendarRows = [];
-  let row = [];
-
-  for (let i = 0; i < calendarDates.length; i++) {
-    row.push(calendarDates[i]);
-
-    if (calendarDates.length - 1 === i) {
-      calendarRows.push(row);
-      break;
-    }
-
-    if (row.length === 7) {
-      calendarRows.push(row);
-      row = [];
-    }
-  }
-
   // * Create years list
   const YEARS_ARRAY = [];
 
@@ -126,23 +96,16 @@ export function Calendar(): JSX.Element {
         <div>
           <ul className="flex flex-wrap">
             {YEARS_ARRAY.map(year => (
-              <li className="w-1/3 h-16 p-1" key={year}>
-                <button
-                  className={`text-center duration-200 hover:brightness-90 w-full h-full rounded-md border border-slate-200 disabled:brightness-90 ${
-                    selectedYear === year
-                      ? 'bg-pink-600 text-white'
-                      : 'bg-white text-slate-600'
-                  }`}
-                  type="button"
-                  onClick={() => {
-                    dispatch(selectYear(year));
-                    setView(CalendarViews.WEEKS);
-                  }}
-                  disabled={year < dayjs().year()}
-                >
-                  {year}
-                </button>
-              </li>
+              <MonthAndYearButton
+                key={year}
+                value={year.toString()}
+                handleClick={() => {
+                  dispatch(selectYear(year));
+                  setView(CalendarViews.WEEKS);
+                }}
+                disabled={year < dayjs().year()}
+                isSelected={year === selectedYear}
+              />
             ))}
           </ul>
         </div>
@@ -152,106 +115,82 @@ export function Calendar(): JSX.Element {
         <div>
           <ul className="flex flex-wrap">
             {MONTH_LIST.map((month, index) => (
-              <li className="w-1/3 h-16 p-1" key={month}>
-                <button
-                  className={`text-center duration-200 hover:brightness-90 w-full h-full rounded-md border border-slate-200 disabled:brightness-90 ${
-                    selectedMonth === index
-                      ? 'bg-pink-600 text-white'
-                      : 'bg-white text-slate-600'
-                  }`}
-                  type="button"
-                  onClick={() => {
-                    dispatch(selectMonth(index));
-                    setView(CalendarViews.WEEKS);
-                  }}
-                  disabled={dayjs(`${selectedYear}-${index + 1}-01`).isBefore(
-                    dayjs(),
-                    'month',
-                  )}
-                >
-                  {month}
-                </button>
-              </li>
+              <MonthAndYearButton
+                value={month}
+                key={month}
+                isSelected={selectedMonth === index}
+                handleClick={() => {
+                  dispatch(selectMonth(index));
+                  setView(CalendarViews.WEEKS);
+                }}
+                disabled={dayjs(`${selectedYear}-${index + 1}-01`).isBefore(
+                  dayjs(),
+                  'month',
+                )}
+              />
             ))}
           </ul>
         </div>
       )}
 
       {view === CalendarViews.WEEKS && (
-        <table className="w-full">
-          <tr>
-            <th className="flex items-center justify-between h-10">
-              <IconButton
-                icon={BsArrowLeftCircle}
-                size="1.5rem"
-                onClick={() => {
-                  dispatch(prevMonth());
-                }}
-              />
-              <div>
-                <button
-                  type="button"
-                  onClick={() => setView(CalendarViews.MONTHS)}
-                >
-                  {calendarBase.format('MMMM')}
-                </button>
-                {' - '}
-                <button
-                  type="button"
-                  onClick={() => setView(CalendarViews.YEARS)}
-                >
-                  {calendarBase.format('YYYY')}
-                </button>
-              </div>
+        <div>
+          <div className="flex justify-between">
+            <IconButton
+              icon={BsArrowLeftCircle}
+              size="1.5rem"
+              onClick={() => {
+                dispatch(prevMonth());
+              }}
+            />
 
-              <IconButton
-                icon={BsArrowRightCircle}
-                size="1.5rem"
+            <div>
+              <button
+                type="button"
+                onClick={() => setView(CalendarViews.MONTHS)}
+              >
+                {calendarBase.format('MMMM')}
+              </button>
+              {' - '}
+              <button
+                type="button"
+                onClick={() => setView(CalendarViews.YEARS)}
+              >
+                {calendarBase.format('YYYY')}
+              </button>
+            </div>
+
+            <IconButton
+              icon={BsArrowRightCircle}
+              size="1.5rem"
+              onClick={() => {
+                dispatch(nextMonth());
+              }}
+            />
+          </div>
+
+          <div className="flex h-10 mt-4 full">
+            {WEEKDAYS_SHORT.map(day => (
+              <div
+                className="text-center calendar-cel text-slate-500"
+                key={day}
+              >
+                {day}
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap">
+            {calendarDates.map(date => (
+              <CalendarCell
+                day={date}
                 onClick={() => {
-                  dispatch(nextMonth());
+                  if (date.day) dispatch(selectDate(date.day));
                 }}
               />
-            </th>
-          </tr>
-          <tr className="flex w-full">
-            {WEEKDAYS_SHORT.map(day => (
-              <th className="calendar-cel text-slate-500" key={day}>
-                {day}
-              </th>
             ))}
-          </tr>
-          {calendarRows.map(currentRow => (
-            <tr className="flex items-stretch w-full">
-              {currentRow.map(date => (
-                <td className="p-1 calendar-cel md:px-2 md:py-1">
-                  <button
-                    type="button"
-                    className={`h-16 duration-200 hover:brightness-90 w-full flex flex-col justify-between rounded-md border border-slate-200 text-left p-2 disabled:brightness-90 ${calendarCellStyle(
-                      selectedDate,
-                      date.day,
-                    )}`}
-                    onClick={() => {
-                      if (date.day) dispatch(selectDate(date.day));
-                    }}
-                    disabled={
-                      !date.day ||
-                      dayjs(
-                        `${selectedYear}-${selectedMonth + 1}-${date.day}`,
-                      ).isBefore(dayjs(), 'day')
-                    }
-                  >
-                    <span>{date.day}</span>
-                    {date.hasReminder && (
-                      <div className="flex justify-end w-full">
-                        <div className="w-3 h-3 bg-yellow-500 rounded-full" />
-                      </div>
-                    )}
-                  </button>
-                </td>
-              ))}
-            </tr>
-          ))}
-        </table>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -48,7 +48,7 @@ export const RemidersList = () => {
               return dayjs(a.date).isBefore(b.date) ? -1 : 1;
             })
             .map(reminder => (
-              <li className="mb-2 last:mb-0">
+              <li key={reminder.id} className="mb-2 last:mb-0">
                 <RemiderCard
                   reminder={reminder}
                   handleDelete={() => {
