@@ -4,14 +4,19 @@ import { MdEdit, MdDelete } from 'react-icons/md';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
 import { Modal, IModalRef } from '../Modal';
+import { CreateReminderForm } from './CreateReminderForm';
 
 export const RemidersList = () => {
   const modalRef = useRef<IModalRef>(null);
 
   return (
     <>
-      <div className="px-4 h-full pb-4 md:pb-12 overflow-y-auto">
-        <Button type="button" onClick={() => modalRef.current?.toggle()}>
+      <div className="px-4 h-full pb-20 md:pb-12 overflow-y-auto">
+        <Button
+          type="button"
+          onClick={() => modalRef.current?.toggle()}
+          modileFixedBottom
+        >
           Create remider
         </Button>
         <ul className="mt-2">
@@ -32,7 +37,7 @@ export const RemidersList = () => {
         </ul>
       </div>
       <Modal title="Create a new reminder" ref={modalRef}>
-        <h1>Create Remider</h1>
+        <CreateReminderForm />
       </Modal>
     </>
   );

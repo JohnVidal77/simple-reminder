@@ -12,3 +12,17 @@
     grid-template-rows: 56px calc(100vh - 56px);
   }
 }
+
+@layer components {
+  input:focus ~ label {
+    @apply duration-200 origin-left transform scale-75 text-purple-600 translate-y-[-1.75rem] translate-x-[-0.5rem];
+  }
+
+  input:not(:focus):not(:placeholder-shown) ~ label {
+    @apply duration-200 origin-left transform scale-75 translate-y-[-1.75rem] translate-x-[-0.75rem];
+  }
+
+  input:not(:focus):placeholder-shown ~ label {
+    @apply duration-200 origin-left transform scale-100 translate-x-0 translate-y-0 text-slate-500;
+  }
+}
