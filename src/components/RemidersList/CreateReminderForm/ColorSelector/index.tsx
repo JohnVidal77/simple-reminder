@@ -22,9 +22,9 @@ interface IProps {
 
 export const ColorSelector = ({ selectedColor, setSelectedColor }: IProps) => {
   return (
-    <fieldset className="mb-4">
-      <legend className="text-slate-500 mb-2">Pick a color</legend>
-      <div className="flex flex-wrap gap-2 justify-start md:justify-between">
+    <fieldset className="mb-8">
+      <legend className="mb-2 text-slate-500">Pick a color</legend>
+      <div className="flex flex-wrap justify-start gap-2">
         {COLORS.map(color => (
           <label
             className={`flex justify-center items-center cursor-pointer hover:brightness-90 duration-200 w-6 h-6 rounded-md ${color}`}

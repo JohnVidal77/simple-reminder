@@ -17,13 +17,13 @@ import { RemiderCard } from './RemiderCard';
 export const RemidersList = () => {
   const modalRef = useRef<IModalRef>(null);
   const dispatch = useAppDispatch();
-  const { reminders } = useAppSelector(selectReminder);
+  const { reminders, selectedReminder } = useAppSelector(selectReminder);
   const { selectedDate, selectedMonth, selectedYear } =
     useAppSelector(selectCalendar);
 
   return (
     <>
-      <div className="px-4 h-full pb-20 md:pb-12 overflow-y-auto">
+      <div className="h-full px-4 pb-20 overflow-y-auto md:pb-12">
         <Button
           type="button"
           onClick={() => {
@@ -44,6 +44,9 @@ export const RemidersList = () => {
 
               return dayjs(reminderDate).isSame(selectedCalendarDate);
             })
+            .sort((a, b) => {
+              return dayjs(a.date).isBefore(b.date) ? -1 : 1;
+            })
             .map(reminder => (
               <li className="mb-2 last:mb-0">
                 <RemiderCard
@@ -58,7 +61,10 @@ export const RemidersList = () => {
             ))}
         </ul>
       </div>
-      <Modal title="Create a new reminder" ref={modalRef}>
+      <Modal
+        title={selectedReminder ? 'Edit reminder' : 'Create a new reminder'}
+        ref={modalRef}
+      >
         <CreateReminderForm closeModal={() => modalRef.current?.toggle()} />
       </Modal>
     </>
