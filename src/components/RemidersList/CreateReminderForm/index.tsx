@@ -78,13 +78,14 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
           rm => dayjs(rm.date).format('HH:mm') === reminderTime,
         );
 
-        if (!existReminder) {
+        if (!existReminder || selectedReminder) {
           dispatch(saveReminder(obj));
           closeModal();
           return;
         }
 
         if (
+          !selectedReminder &&
           existReminder &&
           window.confirm(
             'Already exist reminder at the chosen time. Do you want add another one?',
@@ -104,7 +105,7 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
       reminder,
       date,
       time,
-      selectedReminder?.id,
+      selectedReminder,
       selectedColor,
       reminders,
       closeModal,
@@ -148,9 +149,7 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}
         />
-        <Button type="submit" modileFixedBottom>
-          Save
-        </Button>
+        <Button type="submit">Save</Button>
       </form>
     </div>
   );
