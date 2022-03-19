@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import dayjs from 'dayjs';
 import { useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -51,7 +52,10 @@ export const RemidersList = () => {
               <li className="mb-2 last:mb-0">
                 <RemiderCard
                   reminder={reminder}
-                  handleDelete={() => dispatch(deleteReminder(reminder.id))}
+                  handleDelete={() => {
+                    if (window.confirm('Delete reminder?'))
+                      dispatch(deleteReminder(reminder.id));
+                  }}
                   handleEdit={() => {
                     dispatch(editReminder(reminder));
                     modalRef.current?.toggle();

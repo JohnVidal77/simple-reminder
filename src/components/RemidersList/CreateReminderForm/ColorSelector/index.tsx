@@ -27,6 +27,7 @@ export const ColorSelector = ({ selectedColor, setSelectedColor }: IProps) => {
       <div className="flex flex-wrap justify-start gap-2">
         {COLORS.map(color => (
           <label
+            key={color}
             className={`flex justify-center items-center cursor-pointer hover:brightness-90 duration-200 w-6 h-6 rounded-md ${color}`}
             htmlFor={color}
           >

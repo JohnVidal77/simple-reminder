@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import * as Yup from 'yup';
@@ -10,6 +11,7 @@ import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { ColorSelector } from './ColorSelector';
 import { handleYupErrors } from '../../../utils/handleYupErrors';
+import { selectCalendar } from '../../../features/calendarSlice';
 
 interface IProps {
   closeModal: () => void;
@@ -23,11 +25,17 @@ interface IFormErrors {
 
 export const CreateReminderForm = ({ closeModal }: IProps) => {
   const dispatch = useAppDispatch();
-  const { selectedReminder } = useAppSelector(selectReminder);
+  const { selectedReminder, reminders } = useAppSelector(selectReminder);
+  const { selectedDate, selectedMonth, selectedYear } =
+    useAppSelector(selectCalendar);
 
   const [selectedColor, setSelectedColor] = useState('bg-red-500');
   const [reminder, setReminder] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(
+    dayjs(`${selectedYear}-${selectedMonth + 1}-${selectedDate}`).format(
+      'YYYY-MM-DD',
+    ),
+  );
   const [time, setTime] = useState('');
   const [errors, setErrors] = useState<IFormErrors>({});
 
@@ -65,7 +73,26 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
           title: reminder,
         };
 
-        dispatch(saveReminder(obj));
+        const reminderTime = dayjs(obj.date).format('HH:mm');
+        const existReminder = reminders.find(
+          rm => dayjs(rm.date).format('HH:mm') === reminderTime,
+        );
+
+        if (!existReminder) {
+          dispatch(saveReminder(obj));
+          closeModal();
+          return;
+        }
+
+        if (
+          existReminder &&
+          window.confirm(
+            'Already exist reminder at the chosen time. Do you want add another one?',
+          )
+        ) {
+          dispatch(saveReminder(obj));
+        }
+
         closeModal();
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -74,13 +101,14 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
       }
     },
     [
-      closeModal,
-      dispatch,
       reminder,
       date,
       time,
-      selectedColor,
       selectedReminder?.id,
+      selectedColor,
+      reminders,
+      closeModal,
+      dispatch,
     ],
   );
 
