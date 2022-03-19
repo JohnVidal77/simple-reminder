@@ -25,6 +25,10 @@ To ensure a good code formating and best pratices was used Eslint, Editorconfig 
  - [x] Ability to delete reminders.
  - [x] Expand the calendar to support more than the current month.
 
+## Screenshots
+
+![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
 ## Getting Started
 To run this project locally is simple:
 
@@ -41,3 +45,10 @@ To run this project locally is simple:
 	 - **features**: all reducers and slices used by redux
 	 - **types**: all Types shared by the app
 	 - **utils**: simple functions to abstract logic and avoid repetitions
+
+## Backlog
+
+ - [ ] Improve acessibility
+ - [ ] Create dark mode
+ - [ ] Connect to a cloud database
+ - [ ] Send notification for reminders
