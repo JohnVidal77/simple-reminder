@@ -1,6 +1,6 @@
 export interface Reminder {
   id: string;
   title: string;
-  date: Date;
+  date: number;
   color: string;
 }

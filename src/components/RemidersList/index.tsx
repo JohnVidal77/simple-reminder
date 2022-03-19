@@ -31,7 +31,6 @@ export const RemidersList = () => {
             dispatch(clearReminderSelected());
             modalRef.current?.toggle();
           }}
-          modileFixedBottom
         >
           Create remider
         </Button>
