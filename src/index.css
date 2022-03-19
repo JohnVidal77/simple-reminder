@@ -7,4 +7,8 @@
   .calendar-cel {
     width: calc(100% / 7);
   }
+
+  .grid-rows-home-page {
+    grid-template-rows: 56px calc(100vh - 56px);
+  }
 }

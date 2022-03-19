@@ -12,7 +12,7 @@ export const IconButton: React.FC<IProps> = ({
   ...rest
 }) => (
   <button
-    className="duration-200 bg-transparent border-none text-slate-700 hover:cursor-pointer hover:brightness-90"
+    className="duration-200 bg-transparent border-none hover:cursor-pointer hover:brightness-90"
     type="button"
     {...rest}
   >
