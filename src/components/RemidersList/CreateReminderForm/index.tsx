@@ -1,9 +1,12 @@
 import dayjs from 'dayjs';
+import { useState } from 'react';
 import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { ColorSelector } from './ColorSelector';
 
 export const CreateReminderForm = () => {
+  const [selectedColor, setSelectedColor] = useState('bg-red-500');
+
   return (
     <div>
       <form>
@@ -18,7 +21,10 @@ export const CreateReminderForm = () => {
           />
           <Input type="time" label="Hour" maxLength={30} id="hour" />
         </div>
-        <ColorSelector />
+        <ColorSelector
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+        />
         <Button modileFixedBottom>Save</Button>
       </form>
     </div>

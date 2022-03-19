@@ -1,3 +1,6 @@
+import React from 'react';
+import { MdCheck } from 'react-icons/md';
+
 const COLORS = [
   'bg-red-500',
   'bg-orange-500',
@@ -12,17 +15,31 @@ const COLORS = [
   'bg-rose-500',
 ];
 
-export const ColorSelector = () => {
+interface IProps {
+  selectedColor: string;
+  setSelectedColor: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const ColorSelector = ({ selectedColor, setSelectedColor }: IProps) => {
   return (
     <fieldset className="mb-4">
       <legend className="text-slate-500 mb-2">Pick a color</legend>
       <div className="flex flex-wrap gap-2 justify-start md:justify-between">
         {COLORS.map(color => (
           <label
-            className={`block w-6 h-6 rounded-md ${color}`}
+            className={`flex justify-center items-center cursor-pointer hover:brightness-90 duration-200 w-6 h-6 rounded-md ${color}`}
             htmlFor={color}
           >
-            <input className="hidden" type="radio" id={color} />
+            {selectedColor === color && (
+              <MdCheck className="w-4 h-4 text-white" />
+            )}
+            <input
+              className="hidden"
+              onChange={() => setSelectedColor(color)}
+              type="radio"
+              name="color"
+              id={color}
+            />
           </label>
         ))}
       </div>
