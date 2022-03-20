@@ -30,8 +30,18 @@ export const RemiderCard = ({ reminder, handleDelete, handleEdit }: IProps) => {
         </span>
       </div>
       <div className="flex justify-end gap-2">
-        <IconButton icon={MdEdit} onClick={handleEdit} size="1.5rem" />
-        <IconButton icon={MdDelete} onClick={handleDelete} size="1.5rem" />
+        <IconButton
+          data-testid="edit-reminder-button"
+          icon={MdEdit}
+          onClick={handleEdit}
+          size="1.5rem"
+        />
+        <IconButton
+          data-testid="delete-reminder-button"
+          icon={MdDelete}
+          onClick={handleDelete}
+          size="1.5rem"
+        />
       </div>
     </div>
   );

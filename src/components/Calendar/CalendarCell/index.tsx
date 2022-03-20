@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { useAppSelector } from '../../../app/hooks';
-import { selectCalendar } from '../../../features/CalendarSlice/calendarSlice';
+import { selectCalendar } from '../../../app/store';
 import { IDay } from '../../../types/Day';
 
 interface IProps {

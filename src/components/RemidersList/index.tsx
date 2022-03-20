@@ -2,10 +2,9 @@
 import dayjs from 'dayjs';
 import { useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectCalendar } from '../../features/CalendarSlice/calendarSlice';
+import { selectCalendar, selectReminder } from '../../app/store';
 import {
   deleteReminder,
-  selectReminder,
   setSelectedReminder,
   clearReminderSelected,
 } from '../../features/ReminderSlice/reminderSlice';
@@ -26,6 +25,7 @@ export const RemidersList = () => {
     <>
       <div className="h-full px-4 pb-20 overflow-y-auto md:pb-12">
         <Button
+          data-testid="create-reminder-button"
           type="button"
           onClick={() => {
             dispatch(clearReminderSelected());
@@ -35,33 +35,42 @@ export const RemidersList = () => {
           Create remider
         </Button>
         <ul className="mt-2">
-          {reminders
-            .filter(reminder => {
-              const reminderDate = dayjs(reminder.date).format('YYYY-MM-DD');
-              const selectedCalendarDate = `${selectedYear}-${
-                selectedMonth + 1
-              }-${selectedDate}`;
+          {reminders.length === 0 && (
+            <li>
+              <h2 className="text-2xl font-bold text-center text-slate-400">
+                No reminders on this date
+              </h2>
+            </li>
+          )}
+          {reminders.length !== 0 &&
+            reminders
+              .filter(reminder => {
+                const reminderDate = dayjs(reminder.date).format('YYYY-MM-DD');
+                const selectedCalendarDate = `${selectedYear}-${
+                  selectedMonth + 1
+                }-${selectedDate}`;
 
-              return dayjs(reminderDate).isSame(selectedCalendarDate);
-            })
-            .sort((a, b) => {
-              return dayjs(a.date).isBefore(b.date) ? -1 : 1;
-            })
-            .map(reminder => (
-              <li key={reminder.id} className="mb-2 last:mb-0">
-                <RemiderCard
-                  reminder={reminder}
-                  handleDelete={() => {
-                    if (window.confirm('Delete reminder?'))
-                      dispatch(deleteReminder(reminder.id));
-                  }}
-                  handleEdit={() => {
-                    dispatch(setSelectedReminder(reminder));
-                    modalRef.current?.toggle();
-                  }}
-                />
-              </li>
-            ))}
+                return dayjs(reminderDate).isSame(selectedCalendarDate);
+              })
+              .sort((a, b) => {
+                return dayjs(a.date).isBefore(b.date) ? -1 : 1;
+              })
+              .map(reminder => (
+                <li key={reminder.id} className="mb-2 last:mb-0">
+                  <RemiderCard
+                    data-testid="reminder-card"
+                    reminder={reminder}
+                    handleDelete={() => {
+                      if (window.confirm('Delete reminder?'))
+                        dispatch(deleteReminder(reminder.id));
+                    }}
+                    handleEdit={() => {
+                      dispatch(setSelectedReminder(reminder));
+                      modalRef.current?.toggle();
+                    }}
+                  />
+                </li>
+              ))}
         </ul>
       </div>
       <Modal

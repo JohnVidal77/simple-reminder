@@ -7,18 +7,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { IconButton } from '../IconButton';
 import {
-  selectCalendar,
   selectMonth,
   selectDate,
   selectYear,
   prevMonth,
   nextMonth,
 } from '../../features/CalendarSlice/calendarSlice';
-import { selectReminder } from '../../features/ReminderSlice/reminderSlice';
 import { IDay } from '../../types/Day';
 import { CalendarCell } from './CalendarCell';
 import { MonthAndYearButton } from './MonthAndYearButton';
 import { Button } from '../Button';
+import { selectCalendar, selectReminder } from '../../app/store';
 
 const WEEKDAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTH_LIST = [
@@ -97,6 +96,7 @@ export function Calendar(): JSX.Element {
         <div>
           <div>
             <Button
+              data-testid="back-calendar-button"
               typeStyle="basic"
               type="button"
               onClick={() => setView(CalendarViews.WEEKS)}
@@ -125,6 +125,7 @@ export function Calendar(): JSX.Element {
         <div>
           <div>
             <Button
+              data-testid="back-calendar-button"
               typeStyle="basic"
               type="button"
               onClick={() => setView(CalendarViews.WEEKS)}
@@ -165,6 +166,7 @@ export function Calendar(): JSX.Element {
 
             <div>
               <button
+                data-testid="open-month-button"
                 type="button"
                 onClick={() => setView(CalendarViews.MONTHS)}
               >
@@ -172,6 +174,7 @@ export function Calendar(): JSX.Element {
               </button>
               {' - '}
               <button
+                data-testid="open-year-button"
                 type="button"
                 onClick={() => setView(CalendarViews.YEARS)}
               >
@@ -202,6 +205,7 @@ export function Calendar(): JSX.Element {
           <div className="flex flex-wrap">
             {calendarDates.map(date => (
               <CalendarCell
+                key={date.id}
                 day={date}
                 onClick={() => {
                   if (date.day) dispatch(selectDate(date.day));

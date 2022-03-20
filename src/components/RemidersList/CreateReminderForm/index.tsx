@@ -5,16 +5,13 @@ import * as Yup from 'yup';
 import dayjs from 'dayjs';
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import {
-  saveReminder,
-  selectReminder,
-} from '../../../features/ReminderSlice/reminderSlice';
+import { saveReminder } from '../../../features/ReminderSlice/reminderSlice';
 
 import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { ColorSelector } from './ColorSelector';
 import { handleYupErrors } from '../../../utils/handleYupErrors';
-import { selectCalendar } from '../../../features/CalendarSlice/calendarSlice';
+import { selectCalendar, selectReminder } from '../../../app/store';
 
 interface IProps {
   closeModal: () => void;
@@ -41,6 +38,7 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
   );
   const [time, setTime] = useState('');
   const [errors, setErrors] = useState<IFormErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (selectedReminder) {
@@ -60,6 +58,8 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
         date: Yup.string().required('Date is required'),
         time: Yup.string().required('Time is required'),
       });
+
+      setIsLoading(true);
 
       try {
         await schema.validate(
@@ -106,6 +106,8 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
         if (err instanceof Yup.ValidationError) {
           setErrors(handleYupErrors(err));
         }
+      } finally {
+        setIsLoading(false);
       }
     },
     [
@@ -124,6 +126,7 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
     <div>
       <form onSubmit={handleSubmit} noValidate>
         <Input
+          data-testid="reminder-input"
           label="Reminder"
           maxLength={30}
           id="reminder"
@@ -133,6 +136,7 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
         />
         <div className="flex flex-col items-start gap-2 md:flex-row">
           <Input
+            data-testid="date-input"
             type="date"
             label="Date"
             maxLength={30}
@@ -142,7 +146,9 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
             value={date}
             error={errors.date}
           />
+
           <Input
+            data-testid="time-input"
             type="time"
             label="Time"
             maxLength={30}
@@ -156,7 +162,10 @@ export const CreateReminderForm = ({ closeModal }: IProps) => {
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}
         />
-        <Button type="submit">Save</Button>
+
+        <Button data-testid="submit-button" isLoading={isLoading} type="submit">
+          Save
+        </Button>
       </form>
     </div>
   );

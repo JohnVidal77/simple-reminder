@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState } from '../../app/store';
 import { Reminder } from '../../types/Remider';
 
 export interface ReminderState {
@@ -62,7 +61,5 @@ export const {
   setSelectedReminder,
   clearReminderSelected,
 } = reminderSlice.actions;
-
-export const selectReminder = (state: RootState) => state.reminder;
 
 export default reminderSlice.reducer;

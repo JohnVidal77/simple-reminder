@@ -61,9 +61,14 @@ describe('calendar reducer', () => {
   });
 
   it('should go to previous month', () => {
-    const actual = calendarReducer(initialState, prevMonth());
+    const customInitalState = {
+      ...initialState,
+      selectedMonth: 1,
+    };
 
-    expect(actual.selectedMonth).toEqual(11);
+    const actual = calendarReducer(customInitalState, prevMonth());
+
+    expect(actual.selectedMonth).toEqual(0);
   });
 
   it('should go to last month from previous year if current month is January', () => {

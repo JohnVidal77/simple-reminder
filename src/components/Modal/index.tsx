@@ -24,7 +24,10 @@ export const Modal = forwardRef<IModalRef, IProps>(
     }));
 
     return isActive ? (
-      <div className="fixed top-0 left-0 right-0 z-10 flex items-center justify-center w-screen h-full backdrop-blur-sm">
+      <div
+        data-testid="modal-container"
+        className="fixed top-0 left-0 right-0 z-10 flex items-center justify-center w-screen h-full backdrop-blur-sm"
+      >
         <button
           onClick={() => setIsActive(false)}
           type="button"
