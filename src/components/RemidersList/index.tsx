@@ -2,7 +2,7 @@
 import dayjs from 'dayjs';
 import { useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectCalendar } from '../../features/calendarSlice';
+import { selectCalendar } from '../../features/CalendarSlice/calendarSlice';
 import {
   deleteReminder,
   selectReminder,

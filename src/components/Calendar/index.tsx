@@ -13,7 +13,7 @@ import {
   selectYear,
   prevMonth,
   nextMonth,
-} from '../../features/calendarSlice';
+} from '../../features/CalendarSlice/calendarSlice';
 import { selectReminder } from '../../features/remiderSlice';
 import { IDay } from '../../types/Day';
 import { CalendarCell } from './CalendarCell';

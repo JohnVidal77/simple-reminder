@@ -11,7 +11,7 @@ import { Button } from '../../Button';
 import { Input } from '../../Input';
 import { ColorSelector } from './ColorSelector';
 import { handleYupErrors } from '../../../utils/handleYupErrors';
-import { selectCalendar } from '../../../features/calendarSlice';
+import { selectCalendar } from '../../../features/CalendarSlice/calendarSlice';
 
 interface IProps {
   closeModal: () => void;
