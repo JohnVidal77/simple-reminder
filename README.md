@@ -1,15 +1,17 @@
 
 # Interview Project - John Vidal
 
-This project was created to Codelitt interview as a challenge to create a Calendar with no library and a Reminder Manager. To perform the challenge this challenge the following tecnologies were chosen:
+This project was created for Codelitt's job interview as a challenge to create a Calendar with no library and a Reminder Manager. To execute this challenge the following tecnologies were chosen:
 
  - React
  - Redux (react-redux)
  - Tailwindcss
  - Dayjs
 
-Redux was chosen as the state manager following one of the rules for this challenge. Tailwindcss was used to easily created a beautyful app with good design patterns. Dayjs was used just to make simple to manipulate Date objects.
+Redux was chosen as the state manager following one of the rules for this challenge. Tailwindcss was used to easily created a beautiful app with good design patterns. Dayjs was used to make simple to manipulate Date objects.
 To ensure a good code formating and best pratices was used Eslint, Editorconfig and Prettier. The app is hosted on **Firebase Hosting**.
+
+With  a little more time I could write test for all visual components and improve accessibility, both important points. But I'm satisfied and happy with the result achieved within the stipulated time. Improvement plans are listed in the backlog section [backlog section ](https://gitlab.com/codelittinc/react-interview-project-john-vidal/-/blob/develop/README.md#backlog).
 
 ## Link to application
 [Calendar Reminder Manager](https://calendar-project-2bd43.web.app/)
@@ -51,7 +53,11 @@ To run this project locally is simple:
 
 ## Backlog
 
- - [ ] Improve acessibility
+ - [ ] Improve test coverage
+ - [ ] Improve accessibility
  - [ ] Create dark mode
  - [ ] Connect to a cloud database
  - [ ] Send notification for reminders
+
+## Authors
+- [@johnvidal77](https://www.linkedin.com/in/johnvidal77)
