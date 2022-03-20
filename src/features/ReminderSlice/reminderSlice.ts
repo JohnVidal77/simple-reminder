@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState } from '../app/store';
-import { Reminder } from '../types/Remider';
+import { RootState } from '../../app/store';
+import { Reminder } from '../../types/Remider';
 
-export interface CalendarState {
+export interface ReminderState {
   reminders: Array<Reminder>;
   selectedReminder: Reminder | null;
 }
@@ -12,7 +12,7 @@ const remidersFromLocalStorage = JSON.parse(
   localStorage.getItem('@Calendar:reminders') || '[]',
 );
 
-const initialState: CalendarState = {
+const initialState: ReminderState = {
   reminders: remidersFromLocalStorage,
   selectedReminder: null,
 };
@@ -47,7 +47,7 @@ export const reminderSlice = createSlice({
         JSON.stringify(state.reminders),
       );
     },
-    editReminder: (state, action: PayloadAction<Reminder>) => {
+    setSelectedReminder: (state, action: PayloadAction<Reminder>) => {
       state.selectedReminder = action.payload;
     },
     clearReminderSelected: state => {
@@ -59,7 +59,7 @@ export const reminderSlice = createSlice({
 export const {
   saveReminder,
   deleteReminder,
-  editReminder,
+  setSelectedReminder,
   clearReminderSelected,
 } = reminderSlice.actions;
 

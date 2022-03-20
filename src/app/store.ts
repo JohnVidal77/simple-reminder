@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import CalendarReducer from '../features/CalendarSlice/calendarSlice';
-import ReminderReducer from '../features/remiderSlice';
+import ReminderReducer from '../features/ReminderSlice/reminderSlice';
 
 export const store = configureStore({
   reducer: {

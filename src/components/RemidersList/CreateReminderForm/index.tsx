@@ -5,7 +5,10 @@ import * as Yup from 'yup';
 import dayjs from 'dayjs';
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { saveReminder, selectReminder } from '../../../features/remiderSlice';
+import {
+  saveReminder,
+  selectReminder,
+} from '../../../features/ReminderSlice/reminderSlice';
 
 import { Button } from '../../Button';
 import { Input } from '../../Input';

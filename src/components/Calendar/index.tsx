@@ -14,7 +14,7 @@ import {
   prevMonth,
   nextMonth,
 } from '../../features/CalendarSlice/calendarSlice';
-import { selectReminder } from '../../features/remiderSlice';
+import { selectReminder } from '../../features/ReminderSlice/reminderSlice';
 import { IDay } from '../../types/Day';
 import { CalendarCell } from './CalendarCell';
 import { MonthAndYearButton } from './MonthAndYearButton';

@@ -6,9 +6,9 @@ import { selectCalendar } from '../../features/CalendarSlice/calendarSlice';
 import {
   deleteReminder,
   selectReminder,
-  editReminder,
+  setSelectedReminder,
   clearReminderSelected,
-} from '../../features/remiderSlice';
+} from '../../features/ReminderSlice/reminderSlice';
 
 import { Button } from '../Button';
 import { Modal, IModalRef } from '../Modal';
@@ -56,7 +56,7 @@ export const RemidersList = () => {
                       dispatch(deleteReminder(reminder.id));
                   }}
                   handleEdit={() => {
-                    dispatch(editReminder(reminder));
+                    dispatch(setSelectedReminder(reminder));
                     modalRef.current?.toggle();
                   }}
                 />
