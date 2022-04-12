@@ -1,5 +1,5 @@
 
-# Interview Project - John Vidal
+# Simple Reminder App
 
 This project was created for Codelitt's job interview as a challenge to create a Calendar with no library and a Reminder Manager. To execute this challenge the following tecnologies were chosen:
 
